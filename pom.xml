@@ -69,9 +69,15 @@
         </dependency>
     </dependencies>
 
-    <!-- Required for Java 11 functions in the inline editor -->
     <build>
         <plugins>
+            <!-- Required in order to execute JUnit 5 tests with maven test phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+            </plugin>
+            <!-- Required for Java 11 functions in the inline editor -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
