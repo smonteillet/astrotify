@@ -1,6 +1,15 @@
+# IntelliJ
 .idea
 *.iws
 *.iml
 *ipr
 
+# VsCode
+.classpath
+.factorypath
+.project
+/.settings
+/.vscode
+
+# Maven
 /target
