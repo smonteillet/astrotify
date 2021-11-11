@@ -41,14 +41,21 @@ class AstrotifyTest {
         // given
         when(astronomicalDailyData.isTonightGoodForAstronomicalObservation()).thenReturn(true);
         when(astronomicalDailyData.getSource()).thenReturn("URL");
+        when(astronomicalDailyData.getTonightAvailableCelestialBodies()).thenReturn(List.of("Lune", "Jupiter", "Saturne"));
         when(fetchAstronomicalDataPort.fetchAstronomicalData()).thenReturn(astronomicalDailyData);
         Astrotify astrotify = new Astrotify(List.of(sendAlertPort), fetchAstronomicalDataPort);
         // when
         astrotify.sendAlertIfTonightIsGoodForAstro();
         // then
-        verify(sendAlertPort).sendAlert("⭐⭐⭐ Salut c'est Galilée !" +
-                "\n Il semblerait qu'une bonne soirée astro se profile ce soir, il faut sortir le téléscope 🔭. " +
-                "Pour plus de détail : URL");
+        verify(sendAlertPort).sendAlert(
+                "⭐⭐⭐ Salut c'est Galilée !\n" +
+                "Il semblerait qu'une bonne soirée astro se profile ce soir, il faut sortir le téléscope 🔭. \n" +
+                "Voici les astres présents dans la soirée :\n" +
+                 " - Lune\n" +
+                 " - Jupiter\n" +
+                 " - Saturne\n" +
+                "Pour plus de détail : URL"
+        );
     }
 
 }

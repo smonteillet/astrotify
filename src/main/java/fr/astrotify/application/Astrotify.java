@@ -1,8 +1,8 @@
 package fr.astrotify.application;
 
+import fr.astrotify.application.port.in.SendAlertIfTonightIsGoodForAstroUseCase;
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
 import fr.astrotify.application.port.out.SendAlertPort;
-import fr.astrotify.application.port.in.SendAlertIfTonightIsGoodForAstroUseCase;
 import fr.astrotify.domain.AstronomicalDailyData;
 
 import java.util.List;
@@ -21,9 +21,11 @@ public class Astrotify implements SendAlertIfTonightIsGoodForAstroUseCase {
     public void sendAlertIfTonightIsGoodForAstro() {
         AstronomicalDailyData astronomicalData = fetchAstronomicalDataPort.fetchAstronomicalData();
         if (astronomicalData.isTonightGoodForAstronomicalObservation()) {
-            String message = "⭐⭐⭐ Salut c'est Galilée !" +
-                    "\n Il semblerait qu'une bonne soirée astro se profile ce soir, il faut sortir le téléscope 🔭. " +
-                    "Pour plus de détail : " + astronomicalData.getSource();
+            String message = "⭐⭐⭐ Salut c'est Galilée !\n" +
+                    "Il semblerait qu'une bonne soirée astro se profile ce soir, il faut sortir le téléscope 🔭. \n" +
+                    "Voici les astres présents dans la soirée :\n - " +
+                    String.join("\n - ", astronomicalData.getTonightAvailableCelestialBodies()) +
+                    "\nPour plus de détail : " + astronomicalData.getSource();
             notifierPorts.forEach(notifier -> notifier.sendAlert(message));
         }
     }
