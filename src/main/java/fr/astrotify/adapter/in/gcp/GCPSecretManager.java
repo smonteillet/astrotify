@@ -1,4 +1,4 @@
-package fr.astrotify.adapter.gcp;
+package fr.astrotify.adapter.in.gcp;
 
 import com.google.cloud.secretmanager.v1.AccessSecretVersionResponse;
 import com.google.cloud.secretmanager.v1.SecretManagerServiceClient;

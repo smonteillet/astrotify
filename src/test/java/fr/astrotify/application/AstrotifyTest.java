@@ -2,6 +2,7 @@ package fr.astrotify.application;
 
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
 import fr.astrotify.application.port.out.SendAlertPort;
+import fr.astrotify.application.service.Astrotify;
 import fr.astrotify.domain.AstronomicalDailyData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

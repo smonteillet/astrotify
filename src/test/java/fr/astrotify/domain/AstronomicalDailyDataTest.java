@@ -23,6 +23,19 @@ class AstronomicalDailyDataTest {
     public class GetTonightCelestialBodies {
 
         @Test
+        public void returnsSingleCelestialBodyForTonight() {
+            // given
+            AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()
+                    .astronomicalHourlyDataList(List.of(
+                            AstronomicalHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build()
+                    )).build();
+            // when
+            List<String> tonightAvailableCelestialBodies = astronomicalDailyData.getTonightAvailableCelestialBodies();
+            // then
+            assertThat(tonightAvailableCelestialBodies).containsExactly("Jupiter");
+        }
+
+        @Test
         public void returnsMultipleCelestialBodiesForTonight() {
             // given
             AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()

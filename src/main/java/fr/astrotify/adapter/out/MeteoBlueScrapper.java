@@ -1,4 +1,4 @@
-package fr.astrotify.adapter;
+package fr.astrotify.adapter.out;
 
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
 import fr.astrotify.domain.AstronomicalDailyData;

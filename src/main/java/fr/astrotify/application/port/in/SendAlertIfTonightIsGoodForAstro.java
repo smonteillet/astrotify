@@ -1,5 +1,5 @@
 package fr.astrotify.application.port.in;
 
-public interface SendAlertIfTonightIsGoodForAstroUseCase {
+public interface SendAlertIfTonightIsGoodForAstro {
     void sendAlertIfTonightIsGoodForAstro();
 }

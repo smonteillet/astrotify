@@ -1,8 +1,8 @@
-package fr.astrotify.adapter.gcp;
+package fr.astrotify.adapter.in.gcp;
 
 import com.google.cloud.functions.BackgroundFunction;
 import com.google.cloud.functions.Context;
-import fr.astrotify.common.AstrotifyFactory;
+import fr.astrotify.Main;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public class GCPFunctionEntrypoint implements BackgroundFunction<GCPFunctionEntr
 
     @Override
     public void accept(PubSubMessage pubSubMessage, Context context) {
-        new AstrotifyFactory().buildMainUseCase(
+        new Main().buildAppInstance(
                 new GCPSecretManager().getLatestVersionSecret("875152963263", "ASTROTIFY_TELEGRAM_BOT_TOKEN"),
                 System.getenv("TELEGRAM_CHAT_ID"),
                 System.getenv("METEOBLUE_URL")
