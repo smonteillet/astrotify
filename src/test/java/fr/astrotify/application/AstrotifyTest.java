@@ -1,5 +1,6 @@
 package fr.astrotify.application;
 
+import fr.astrotify.application.port.out.CelestialBodyDataFetcher;
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
 import fr.astrotify.application.port.out.SendAlertPort;
 import fr.astrotify.application.service.Astrotify;
@@ -30,7 +31,7 @@ class AstrotifyTest {
         // given
         when(astronomicalDailyData.isTonightGoodForAstronomicalObservation()).thenReturn(false);
         when(fetchAstronomicalDataPort.fetchAstronomicalData()).thenReturn(astronomicalDailyData);
-        Astrotify astrotify = new Astrotify(List.of(sendAlertPort), fetchAstronomicalDataPort);
+        Astrotify astrotify = new Astrotify(List.of(sendAlertPort), fetchAstronomicalDataPort, mock(CelestialBodyDataFetcher.class));
         // when
         astrotify.sendAlertIfTonightIsGoodForAstro();
         // then
@@ -44,7 +45,7 @@ class AstrotifyTest {
         when(astronomicalDailyData.getSource()).thenReturn("URL");
         when(astronomicalDailyData.getTonightAvailableCelestialBodies()).thenReturn(List.of("Lune", "Jupiter", "Saturne"));
         when(fetchAstronomicalDataPort.fetchAstronomicalData()).thenReturn(astronomicalDailyData);
-        Astrotify astrotify = new Astrotify(List.of(sendAlertPort), fetchAstronomicalDataPort);
+        Astrotify astrotify = new Astrotify(List.of(sendAlertPort), fetchAstronomicalDataPort, mock(CelestialBodyDataFetcher.class));
         // when
         astrotify.sendAlertIfTonightIsGoodForAstro();
         // then

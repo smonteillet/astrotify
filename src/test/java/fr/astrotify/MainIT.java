@@ -1,6 +1,8 @@
 package fr.astrotify;
 
 import fr.astrotify.adapter.out.MeteoBlueScrapper;
+import fr.astrotify.adapter.out.TheSkyLiveScrapper;
+import fr.astrotify.application.port.out.CelestialBodyDataFetcher;
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
 import fr.astrotify.application.port.out.SendAlertPort;
 import fr.astrotify.application.service.Astrotify;
@@ -15,11 +17,14 @@ import java.util.logging.Logger;
 public class MainIT {
 
     private static final Logger LOGGER = Logger.getLogger(MainIT.class.getName());
-    public static final String METEOBLUE_URL = "https://www.meteoblue.com/en/weather/outdoorsports/seeing/muret_france_2991153,TELEGRAM_CHAT_ID=-750321988";
+    public static final String METEOBLUE_URL = "https://www.meteoblue.com/en/weather/outdoorsports/seeing/muret_france_2991153";
 
     public static void main(String[] args) {
         FetchAstronomicalDataPort meteoBlueScrapper = new MeteoBlueScrapper(METEOBLUE_URL);
+        CelestialBodyDataFetcher celestialBodyDataFetcher = new TheSkyLiveScrapper();
         SendAlertPort sendAlertPort = LOGGER::info;
-        new Astrotify(List.of(sendAlertPort), meteoBlueScrapper).sendAlertIfTonightIsGoodForAstro();
+        Astrotify astrotify = new Astrotify(List.of(sendAlertPort), meteoBlueScrapper, celestialBodyDataFetcher);
+        astrotify.sendAlertIfTonightIsGoodForAstro();
+        astrotify.sendCelestialBodyDataAlert();
     }
 }

@@ -1,5 +1,6 @@
 package fr.astrotify.application.port.in;
 
-public interface SendAlertIfTonightIsGoodForAstro {
+public interface SendAstroAlert {
     void sendAlertIfTonightIsGoodForAstro();
+    void sendCelestialBodyDataAlert();
 }
