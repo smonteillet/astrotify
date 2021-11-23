@@ -14,10 +14,14 @@ public class GCPFunctionEntrypoint implements BackgroundFunction<GCPFunctionEntr
         SendAstroAlert sendAstroAlert = new Main().buildAppInstance(
                 new GCPSecretManager().getLatestVersionSecret("875152963263", "ASTROTIFY_TELEGRAM_BOT_TOKEN"),
                 System.getenv("TELEGRAM_CHAT_ID"),
-                System.getenv("METEOBLUE_URL")
+                System.getenv("METEOBLUE_URL"),
+                System.getenv("SKY_LIVE_URL")
+
         );
+        String city = System.getenv("CITY");
+        String celestialBody = System.getenv("CELESTIAL_BODY");
         sendAstroAlert.sendAlertIfTonightIsGoodForAstro();
-        sendAstroAlert.sendCelestialBodyDataAlert();
+        sendAstroAlert.sendCelestialBodyInfoMessageForTomorrow(celestialBody, city);
     }
 
 

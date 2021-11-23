@@ -14,10 +14,10 @@ import java.util.List;
 public class Main {
 
     // since we don't rely on a DI framework, we have to build application instance ourselves.
-    public SendAstroAlert buildAppInstance(String telegramBotToken, String telegramChatId, String meteoBlueURL) {
+    public SendAstroAlert buildAppInstance(String telegramBotToken, String telegramChatId, String meteoBlueURL, String theSkyLiveURL) {
         SendAlertPort telegramNotifier = new TelegramMessageSender(telegramBotToken, telegramChatId);
         FetchAstronomicalDataPort meteoBlueScrapper = new MeteoBlueScrapper(meteoBlueURL);
-        CelestialBodyDataFetcher celestialBodyDataFetcher =  new TheSkyLiveScrapper();
+        CelestialBodyDataFetcher celestialBodyDataFetcher =  new TheSkyLiveScrapper(theSkyLiveURL);
         return new Astrotify(List.of(telegramNotifier), meteoBlueScrapper, celestialBodyDataFetcher);
     }
 

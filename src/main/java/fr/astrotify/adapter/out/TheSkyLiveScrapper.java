@@ -13,25 +13,35 @@ import java.time.format.DateTimeFormatter;
 public class TheSkyLiveScrapper implements CelestialBodyDataFetcher {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final String theSkyLiveURL;
 
-    public static final String URL = "https://theskylive.com/planetarium?localdata=43.46667%7C1.35%7CMuret+(FR)" +
-            "%7CEurope%2FParis%7C0&obj=cometleonard&h=20&m=00&date={date}";
+    public TheSkyLiveScrapper(String theSkyLiveURL) {
+
+        this.theSkyLiveURL = theSkyLiveURL;
+    }
 
     @Override
-    public CelestialBody fetchData(LocalDate date) {
-        Document document = getDocument(computeUrl(date));
-        String rise = document.select("span#circumstances").get(0).child(1).text();
+    public CelestialBody fetchData(LocalDate date, String celestialBodyName) {
+        String theSkyLiveUrl = computeUrl(date);
+        Document document = getDocument(theSkyLiveUrl);
+        String rise = document.select("span#circumstances").get(0).child(0).text();
         String set = document.select("span#circumstances").get(0).child(2).text();
         String magnitude = document.select("span#magnitude").text();
+        String distanceToEarth = document.select("span#distearth").parents().get(0).text();
+        String distanceToSun = document.select("span#distsun").parents().get(0).text();
         return CelestialBody.builder()
                 .rise(rise)
                 .set(set)
                 .magnitude(magnitude)
+                .dataSource(theSkyLiveUrl)
+                .name(celestialBodyName)
+                .distanceToEarth(distanceToEarth)
+                .distanceToSun(distanceToSun)
                 .build();
     }
 
     private String computeUrl(LocalDate date) {
-        return (URL.replace("{date}", date.format(DATE_FORMAT)));
+        return (theSkyLiveURL.replace("{date}", date.format(DATE_FORMAT)));
     }
 
     private Document getDocument(String url) {
