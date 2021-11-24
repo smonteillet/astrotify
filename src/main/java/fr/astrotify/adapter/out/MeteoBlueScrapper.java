@@ -1,8 +1,8 @@
 package fr.astrotify.adapter.out;
 
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
-import fr.astrotify.domain.AstronomicalDailyData;
-import fr.astrotify.domain.AstronomicalHourlyData;
+import fr.astrotify.domain.AstroWeatherDailyData;
+import fr.astrotify.domain.AstroWeatherHourlyData;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -22,11 +22,21 @@ public class MeteoBlueScrapper implements FetchAstronomicalDataPort {
 
 
     @Override
-    public AstronomicalDailyData fetchAstronomicalData() {
-        List<AstronomicalHourlyData> astronomicalHourlyDataList = getMeteoBlueDocument(meteoblueUrl)
+    public AstroWeatherDailyData fetchTodayAstronomicalData() {
+       return fetchAstronomicalData("0");
+    }
+
+    @Override
+    public AstroWeatherDailyData fetchTomorrowAstronomicalData() {
+        return fetchAstronomicalData("1");
+    }
+
+    private AstroWeatherDailyData fetchAstronomicalData(String dayIndex)
+    {
+        List<AstroWeatherHourlyData> astroWeatherHourlyDataList = getMeteoBlueDocument(meteoblueUrl)
                 .select("tr.night").stream()
-                .filter(hourRow -> hourRow.attr("data-day").equals("0")) // just  current day
-                .map(hourRow -> AstronomicalHourlyData.builder()
+                .filter(hourRow -> hourRow.attr("data-day").equals(dayIndex))
+                .map(hourRow -> AstroWeatherHourlyData.builder()
                         .hour(toInt(hourRow.child(0).text()))
                         .lowCloud(toInt(hourRow.child(1).text()))
                         .midCloud(toInt(hourRow.child(2).text()))
@@ -35,8 +45,8 @@ public class MeteoBlueScrapper implements FetchAstronomicalDataPort {
                         .celestialBodies(getCelestialBodies(hourRow.select("pre.touch").first().text()))
                         .build())
                 .collect(Collectors.toList());
-        return AstronomicalDailyData.builder()
-                .astronomicalHourlyDataList(astronomicalHourlyDataList)
+        return AstroWeatherDailyData.builder()
+                .astroWeatherHourlyDataList(astroWeatherHourlyDataList)
                 .source(meteoblueUrl)
                 .build();
     }

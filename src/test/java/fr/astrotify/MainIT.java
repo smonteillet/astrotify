@@ -2,7 +2,7 @@ package fr.astrotify;
 
 import fr.astrotify.adapter.out.MeteoBlueScrapper;
 import fr.astrotify.adapter.out.TheSkyLiveScrapper;
-import fr.astrotify.application.port.out.CelestialBodyDataFetcher;
+import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
 import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
 import fr.astrotify.application.port.out.SendAlertPort;
 import fr.astrotify.application.service.Astrotify;
@@ -18,14 +18,14 @@ public class MainIT {
 
     private static final Logger LOGGER = Logger.getLogger(MainIT.class.getName());
     public static final String METEOBLUE_URL = "https://www.meteoblue.com/en/weather/outdoorsports/seeing/muret_france_2991153";
-    public static final String SKY_LIVE_URL = "https://theskylive.com/planetarium?localdata=43.46667%7C1.35%7CMuret+(FR)%7CEurope%2FParis%7C0&obj=cometleonard&h=20&m=00&date={date}";
+    public static final String SKY_LIVE_URL = "https://theskylive.com/planetarium?localdata=43.46667%7C1.35%7CMuret+(FR)%7CEurope%2FParis%7C0&obj=cometleonard&date={date}";
 
     public static void main(String[] args) {
         FetchAstronomicalDataPort meteoBlueScrapper = new MeteoBlueScrapper(METEOBLUE_URL);
-        CelestialBodyDataFetcher celestialBodyDataFetcher = new TheSkyLiveScrapper(SKY_LIVE_URL);
+        CelestialBodyDataFetcherPort celestialBodyDataFetcherPort = new TheSkyLiveScrapper(SKY_LIVE_URL);
         SendAlertPort sendAlertPort = LOGGER::info;
-        Astrotify astrotify = new Astrotify(List.of(sendAlertPort), meteoBlueScrapper, celestialBodyDataFetcher);
-        astrotify.sendAlertIfTonightIsGoodForAstro();
-        astrotify.sendCelestialBodyInfoMessageForTomorrow("Comète Léonard", "Muret");
+        Astrotify astrotify = new Astrotify(sendAlertPort, meteoBlueScrapper, celestialBodyDataFetcherPort);
+        astrotify.sendAlertIfTonightHasGoodWeatherForAstro();
+        astrotify.sendCelestialBodyInfo("Comète Léonard", "Muret");
     }
 }

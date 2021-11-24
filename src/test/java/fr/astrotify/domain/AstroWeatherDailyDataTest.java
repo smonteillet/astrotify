@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class AstronomicalDailyDataTest {
+class AstroWeatherDailyDataTest {
 
 
     private static final int TONIGHT_HOUR = 23;
@@ -25,9 +25,9 @@ class AstronomicalDailyDataTest {
         @Test
         public void returnsSingleCelestialBodyForTonight() {
             // given
-            AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()
-                    .astronomicalHourlyDataList(List.of(
-                            AstronomicalHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build()
+            AstroWeatherDailyData astronomicalDailyData = AstroWeatherDailyData.builder()
+                    .astroWeatherHourlyDataList(List.of(
+                            AstroWeatherHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build()
                     )).build();
             // when
             List<String> tonightAvailableCelestialBodies = astronomicalDailyData.getTonightAvailableCelestialBodies();
@@ -38,10 +38,10 @@ class AstronomicalDailyDataTest {
         @Test
         public void returnsMultipleCelestialBodiesForTonight() {
             // given
-            AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()
-                    .astronomicalHourlyDataList(List.of(
-                            AstronomicalHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build(),
-                            AstronomicalHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Saturn")).build()
+            AstroWeatherDailyData astronomicalDailyData = AstroWeatherDailyData.builder()
+                    .astroWeatherHourlyDataList(List.of(
+                            AstroWeatherHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build(),
+                            AstroWeatherHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Saturn")).build()
                     )).build();
             // when
             List<String> tonightAvailableCelestialBodies = astronomicalDailyData.getTonightAvailableCelestialBodies();
@@ -52,13 +52,13 @@ class AstronomicalDailyDataTest {
         @Test
         public void returnsNoDuplicatedCelestialBodies() {
             // given
-            AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()
-                    .astronomicalHourlyDataList(List.of(
-                            AstronomicalHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build(),
-                            AstronomicalHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter", "Saturn")).build()
+            AstroWeatherDailyData astroWeatherDailyData = AstroWeatherDailyData.builder()
+                    .astroWeatherHourlyDataList(List.of(
+                            AstroWeatherHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter")).build(),
+                            AstroWeatherHourlyData.builder().hour(TONIGHT_HOUR).celestialBodies(List.of("Jupiter", "Saturn")).build()
                     )).build();
             // when
-            List<String> tonightAvailableCelestialBodies = astronomicalDailyData.getTonightAvailableCelestialBodies();
+            List<String> tonightAvailableCelestialBodies = astroWeatherDailyData.getTonightAvailableCelestialBodies();
             // then
             assertThat(tonightAvailableCelestialBodies).containsExactly("Jupiter", "Saturn");
         }
@@ -66,12 +66,12 @@ class AstronomicalDailyDataTest {
         @Test
         public void doesntReturnCelestialBodyFromLastNight() {
             // given
-            AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()
-                    .astronomicalHourlyDataList(List.of(
-                            AstronomicalHourlyData.builder().hour(LAST_NIGHT_HOUR).celestialBodies(List.of("Lune")).build()
+            AstroWeatherDailyData astroWeatherDailyData = AstroWeatherDailyData.builder()
+                    .astroWeatherHourlyDataList(List.of(
+                            AstroWeatherHourlyData.builder().hour(LAST_NIGHT_HOUR).celestialBodies(List.of("Lune")).build()
                     )).build();
             // when
-            List<String> tonightAvailableCelestialBodies = astronomicalDailyData.getTonightAvailableCelestialBodies();
+            List<String> tonightAvailableCelestialBodies = astroWeatherDailyData.getTonightAvailableCelestialBodies();
             // then
             assertThat(tonightAvailableCelestialBodies).isEmpty();
         }
@@ -84,81 +84,81 @@ class AstronomicalDailyDataTest {
 
         public static final boolean NOT_GOOD_FOR_ASTRO = false;
         public static final boolean GOOD_FOR_ASTRO = true;
-        public static final int BAD_CLOUD_SCORE = 36;
-        public static final int GOOD_CLOUD_SCORE = 35;
-        public static final int BAD_SEEING_SCORE = 2;
-        public static final int GOOD_SEEING_SCORE = 3;
+        public static final int BAD_CLOUD_SCORE = AstroWeatherHourlyData.CLOUD_THRESHOLD + 1;
+        public static final int GOOD_CLOUD_SCORE = AstroWeatherHourlyData.CLOUD_THRESHOLD - 1;
+        public static final int BAD_SEEING_SCORE = AstroWeatherHourlyData.SEEING_THRESHOLD - 1;
+        public static final int GOOD_SEEING_SCORE = AstroWeatherHourlyData.SEEING_THRESHOLD + 1;
 
         @ParameterizedTest
         @MethodSource("testData")
-        void isTonightGoodForAstronomicalObservation(boolean isTonightGoodForAstronomicalObservation, List<AstronomicalHourlyData> astronomicalHourlyDataList) {
+        void isTonightGoodForAstronomicalObservation(boolean isTonightGoodForAstronomicalObservation, List<AstroWeatherHourlyData> astroWeatherHourlyDataList) {
             // given
-            AstronomicalDailyData astronomicalDailyData = AstronomicalDailyData.builder()
-                    .astronomicalHourlyDataList(astronomicalHourlyDataList)
+            AstroWeatherDailyData astroWeatherDailyData = AstroWeatherDailyData.builder()
+                    .astroWeatherHourlyDataList(astroWeatherHourlyDataList)
                     .build();
             // when then
-            assertThat(astronomicalDailyData.isTonightGoodForAstronomicalObservation()).isEqualTo(isTonightGoodForAstronomicalObservation);
+            assertThat(astroWeatherDailyData.doesTonightHaveGoodAstroWeather()).isEqualTo(isTonightGoodForAstronomicalObservation);
         }
 
         Stream<Arguments> testData() {
             return Stream.of(
                     Arguments.of(NOT_GOOD_FOR_ASTRO, List.of()),
                     Arguments.of(GOOD_FOR_ASTRO, List.of(
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build()
                     )),
                     Arguments.of(NOT_GOOD_FOR_ASTRO, List.of(
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(BAD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build()
                     )),
                     Arguments.of(NOT_GOOD_FOR_ASTRO, List.of(
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(BAD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build()
                     )),
                     Arguments.of(GOOD_FOR_ASTRO, List.of(
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(BAD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(BAD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build(),
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build(),
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build()
                     )),
                     Arguments.of(NOT_GOOD_FOR_ASTRO, List.of(
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(BAD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(BAD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build(),
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(BAD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build(),
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build()
                     )),
                     Arguments.of(GOOD_FOR_ASTRO, List.of(
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(BAD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(BAD_SEEING_SCORE)
                                     .hour(LAST_NIGHT_HOUR).build(),
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(BAD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build(),
-                            AstronomicalHourlyData.builder()
+                            AstroWeatherHourlyData.builder()
                                     .lowCloud(GOOD_CLOUD_SCORE).midCloud(GOOD_CLOUD_SCORE).highCloud(GOOD_CLOUD_SCORE)
                                     .seeing(GOOD_SEEING_SCORE)
                                     .hour(TONIGHT_HOUR).build()

@@ -8,17 +8,17 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
-public class AstronomicalDailyData {
-    private List<AstronomicalHourlyData> astronomicalHourlyDataList;
+public class AstroWeatherDailyData {
+    private List<AstroWeatherHourlyData> astroWeatherHourlyDataList;
     private String source;
 
-    public boolean isTonightGoodForAstronomicalObservation() {
-        List<AstronomicalHourlyData> nightHourlyData = getNightHourlyData();
+    public boolean doesTonightHaveGoodAstroWeather() {
+        List<AstroWeatherHourlyData> nightHourlyData = getNightHourlyData();
         if (nightHourlyData.isEmpty()) {
             return false;
         }
         long amoutOfGoodHoursTonight = nightHourlyData.stream()
-                .filter(AstronomicalHourlyData::isGoodForAstronomicalObservation)
+                .filter(AstroWeatherHourlyData::hasGoodAstroWeather)
                 .count();
         return ((float) amoutOfGoodHoursTonight / nightHourlyData.size()) > 0.4f;
     }
@@ -30,9 +30,9 @@ public class AstronomicalDailyData {
                 .collect(Collectors.toList());
     }
 
-    private List<AstronomicalHourlyData> getNightHourlyData()
+    private List<AstroWeatherHourlyData> getNightHourlyData()
     {
-        return astronomicalHourlyDataList.stream()
+        return astroWeatherHourlyDataList.stream()
                 .filter(astronomicalHourlyData -> astronomicalHourlyData.getHour() >= 17)
                 .collect(Collectors.toList());
     }

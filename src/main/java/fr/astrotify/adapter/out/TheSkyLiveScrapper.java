@@ -1,6 +1,6 @@
 package fr.astrotify.adapter.out;
 
-import fr.astrotify.application.port.out.CelestialBodyDataFetcher;
+import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
 import fr.astrotify.domain.CelestialBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,7 +10,7 @@ import java.io.UncheckedIOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TheSkyLiveScrapper implements CelestialBodyDataFetcher {
+public class TheSkyLiveScrapper implements CelestialBodyDataFetcherPort {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final String theSkyLiveURL;

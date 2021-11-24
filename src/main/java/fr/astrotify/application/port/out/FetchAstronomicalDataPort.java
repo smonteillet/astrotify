@@ -1,7 +1,8 @@
 package fr.astrotify.application.port.out;
 
-import fr.astrotify.domain.AstronomicalDailyData;
+import fr.astrotify.domain.AstroWeatherDailyData;
 
 public interface FetchAstronomicalDataPort {
-    AstronomicalDailyData fetchAstronomicalData();
+    AstroWeatherDailyData fetchTodayAstronomicalData();
+    AstroWeatherDailyData fetchTomorrowAstronomicalData();
 }
