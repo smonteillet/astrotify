@@ -3,11 +3,11 @@ package fr.astrotify;
 import fr.astrotify.adapter.out.MeteoBlueScrapper;
 import fr.astrotify.adapter.out.TheSkyLiveScrapper;
 import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
-import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
+import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
 import fr.astrotify.application.port.out.SendAlertPort;
-import fr.astrotify.application.service.Astrotify;
+import fr.astrotify.application.service.AstroWeatherUseCaseService;
+import fr.astrotify.application.service.CelestialBodyEphemerideService;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -21,11 +21,15 @@ public class MainIT {
     public static final String SKY_LIVE_URL = "https://theskylive.com/planetarium?localdata=43.46667%7C1.35%7CMuret+(FR)%7CEurope%2FParis%7C0&obj=cometleonard&date={date}";
 
     public static void main(String[] args) {
-        FetchAstronomicalDataPort meteoBlueScrapper = new MeteoBlueScrapper(METEOBLUE_URL);
+        FetchAstronomicalWeatherPort meteoBlueScrapper = new MeteoBlueScrapper(METEOBLUE_URL);
         CelestialBodyDataFetcherPort celestialBodyDataFetcherPort = new TheSkyLiveScrapper(SKY_LIVE_URL);
         SendAlertPort sendAlertPort = LOGGER::info;
-        Astrotify astrotify = new Astrotify(sendAlertPort, meteoBlueScrapper, celestialBodyDataFetcherPort);
-        astrotify.sendAlertIfTonightHasGoodWeatherForAstro();
-        astrotify.sendCelestialBodyInfo("Comète Léonard", "Muret");
+
+        AstroWeatherUseCaseService astroWeatherService = new AstroWeatherUseCaseService(sendAlertPort,meteoBlueScrapper);
+        astroWeatherService.sendAlertIfTonightHasGoodWeatherForAstro();
+
+        CelestialBodyEphemerideService celestialBodyEphemerideService = new CelestialBodyEphemerideService(sendAlertPort, meteoBlueScrapper,
+                celestialBodyDataFetcherPort);
+        celestialBodyEphemerideService.sendCelestialBodyEphemeride("Comète Léonard", "Muret");
     }
 }

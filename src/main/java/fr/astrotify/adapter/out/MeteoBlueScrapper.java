@@ -1,6 +1,6 @@
 package fr.astrotify.adapter.out;
 
-import fr.astrotify.application.port.out.FetchAstronomicalDataPort;
+import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
 import fr.astrotify.domain.AstroWeatherDailyData;
 import fr.astrotify.domain.AstroWeatherHourlyData;
 import org.jsoup.Jsoup;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MeteoBlueScrapper implements FetchAstronomicalDataPort {
+public class MeteoBlueScrapper implements FetchAstronomicalWeatherPort {
 
     private final String meteoblueUrl;
 
@@ -22,12 +22,12 @@ public class MeteoBlueScrapper implements FetchAstronomicalDataPort {
 
 
     @Override
-    public AstroWeatherDailyData fetchTodayAstronomicalData() {
+    public AstroWeatherDailyData fetchTodayAstronomicalWeather() {
        return fetchAstronomicalData("0");
     }
 
     @Override
-    public AstroWeatherDailyData fetchTomorrowAstronomicalData() {
+    public AstroWeatherDailyData fetchTomorrowAstronomicalWeather() {
         return fetchAstronomicalData("1");
     }
 

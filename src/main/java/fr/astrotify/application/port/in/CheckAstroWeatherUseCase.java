@@ -1,6 +1,6 @@
 package fr.astrotify.application.port.in;
 
-public interface CheckAstroWeather {
+public interface CheckAstroWeatherUseCase {
 
     void sendAlertIfTonightHasGoodWeatherForAstro();
 }

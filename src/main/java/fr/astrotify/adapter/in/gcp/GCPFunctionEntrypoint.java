@@ -2,34 +2,39 @@ package fr.astrotify.adapter.in.gcp;
 
 import com.google.cloud.functions.BackgroundFunction;
 import com.google.cloud.functions.Context;
-import fr.astrotify.Main;
+import fr.astrotify.AppInstances;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class GCPFunctionEntrypoint implements BackgroundFunction<GCPFunctionEntrypoint.PubSubMessage> {
-
+    
     @Override
     public void accept(PubSubMessage pubSubMessage, Context context) {
+        // TODO fetch projectId elsewhere. Maybe from System.getenv(...)
         String astrotifyTelegramBotToken = new GCPSecretManager().getLatestVersionSecret("875152963263", "ASTROTIFY_TELEGRAM_BOT_TOKEN");
-        String telegramChatId = System.getenv("TELEGRAM_CHAT_ID");
-        String meteoblueUrl = System.getenv("METEOBLUE_URL");
-        String skyLiveUrl = System.getenv("SKY_LIVE_URL");
-        String city = System.getenv("CITY");
-        String celestialBody = System.getenv("CELESTIAL_BODY");
-
-       Main.buildCheckAstroWeather(
-                astrotifyTelegramBotToken,
-                telegramChatId,
-                meteoblueUrl,
-                skyLiveUrl
-        ).sendAlertIfTonightHasGoodWeatherForAstro();
-
-        Main.buildFetchCelestialBodyData(
-                astrotifyTelegramBotToken,
-                telegramChatId,
-                meteoblueUrl,
-                skyLiveUrl
-        ).sendCelestialBodyInfo(celestialBody, city);
+        String telegramChatId = pubSubMessage.attributes.get("TELEGRAM_CHAT_ID");
+        String functionType = pubSubMessage.attributes.get("FUNCTION");
+        String meteoblueUrl = pubSubMessage.attributes.get("METEOBLUE_URL");
+        if (functionType.equals("CHECK_WEATHER")) {
+            AppInstances.buildCheckAstroWeatherUseCase(
+                    astrotifyTelegramBotToken,
+                    telegramChatId,
+                    meteoblueUrl
+            ).sendAlertIfTonightHasGoodWeatherForAstro();
+        } else if (functionType.equals("CELESTIAL_BODY")) {
+            String skyLiveUrl = pubSubMessage.attributes.get("SKY_LIVE_URL");
+            String city = pubSubMessage.attributes.get("CITY");
+            String celestialBody = pubSubMessage.attributes.get("CELESTIAL_BODY");
+            AppInstances.buildCelestialBodyEphemerideUseCase(
+                    astrotifyTelegramBotToken,
+                    telegramChatId,
+                    meteoblueUrl,
+                    skyLiveUrl
+            ).sendCelestialBodyEphemeride(celestialBody, city);
+        } else {
+            throw new IllegalArgumentException("Function type is not prodived or is unknown : " + functionType);
+        }
     }
 
 
