@@ -2,11 +2,11 @@ package fr.astrotify;
 
 import fr.astrotify.adapter.out.MeteoBlueScrapper;
 import fr.astrotify.adapter.out.TheSkyLiveScrapper;
-import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
-import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
-import fr.astrotify.application.port.out.SendAlertPort;
-import fr.astrotify.application.service.AstroWeatherUseCaseService;
-import fr.astrotify.application.service.CelestialBodyEphemerideService;
+import fr.astrotify.usecase.port.out.CelestialBodyDataFetcherPort;
+import fr.astrotify.usecase.port.out.FetchAstronomicalWeatherPort;
+import fr.astrotify.usecase.port.out.SendAlertPort;
+import fr.astrotify.usecase.CheckAstroWeather;
+import fr.astrotify.usecase.FetchFetchCelestialBodyEphemeride;
 
 import java.util.logging.Logger;
 
@@ -25,11 +25,11 @@ public class MainIT {
         CelestialBodyDataFetcherPort celestialBodyDataFetcherPort = new TheSkyLiveScrapper(SKY_LIVE_URL);
         SendAlertPort sendAlertPort = LOGGER::info;
 
-        AstroWeatherUseCaseService astroWeatherService = new AstroWeatherUseCaseService(sendAlertPort,meteoBlueScrapper);
+        CheckAstroWeather astroWeatherService = new CheckAstroWeather(sendAlertPort,meteoBlueScrapper);
         astroWeatherService.sendAlertIfTonightHasGoodWeatherForAstro();
 
-        CelestialBodyEphemerideService celestialBodyEphemerideService = new CelestialBodyEphemerideService(sendAlertPort, meteoBlueScrapper,
+        FetchFetchCelestialBodyEphemeride fetchCelestialBodyEphemeride = new FetchFetchCelestialBodyEphemeride(sendAlertPort, meteoBlueScrapper,
                 celestialBodyDataFetcherPort);
-        celestialBodyEphemerideService.sendCelestialBodyEphemeride("Comète Léonard", "Muret");
+        fetchCelestialBodyEphemeride.sendCelestialBodyEphemeride("Comète Léonard", "Muret");
     }
 }

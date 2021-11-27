@@ -2,7 +2,7 @@ package fr.astrotify.adapter.out;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import fr.astrotify.application.port.out.SendAlertPort;
+import fr.astrotify.usecase.port.out.SendAlertPort;
 
 import java.util.logging.Logger;
 

@@ -1,9 +1,9 @@
-package fr.astrotify.application.service;
+package fr.astrotify.usecase;
 
-import fr.astrotify.application.port.in.CelestialBodyEphemerideUseCase;
-import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
-import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
-import fr.astrotify.application.port.out.SendAlertPort;
+import fr.astrotify.usecase.port.in.FetchCelestialBodyEphemerideUseCase;
+import fr.astrotify.usecase.port.out.CelestialBodyDataFetcherPort;
+import fr.astrotify.usecase.port.out.FetchAstronomicalWeatherPort;
+import fr.astrotify.usecase.port.out.SendAlertPort;
 import fr.astrotify.domain.AstroWeatherHourlyData;
 import fr.astrotify.domain.CelestialBody;
 
@@ -11,17 +11,17 @@ import java.time.LocalDate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class CelestialBodyEphemerideService implements CelestialBodyEphemerideUseCase {
+public class FetchFetchCelestialBodyEphemeride implements FetchCelestialBodyEphemerideUseCase {
 
-    private static final Logger LOGGER = Logger.getLogger(CelestialBodyEphemerideService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FetchFetchCelestialBodyEphemeride.class.getName());
 
     private final SendAlertPort sendAlertPort;
     private final FetchAstronomicalWeatherPort fetchAstronomicalWeatherPort;
     private final CelestialBodyDataFetcherPort celestialBodyDataFetcherPort;
 
-    public CelestialBodyEphemerideService(SendAlertPort sendAlertPort,
-                                          FetchAstronomicalWeatherPort fetchAstronomicalWeatherPort,
-                                          CelestialBodyDataFetcherPort celestialBodyDataFetcherPort) {
+    public FetchFetchCelestialBodyEphemeride(SendAlertPort sendAlertPort,
+                                             FetchAstronomicalWeatherPort fetchAstronomicalWeatherPort,
+                                             CelestialBodyDataFetcherPort celestialBodyDataFetcherPort) {
         this.sendAlertPort = sendAlertPort;
         this.fetchAstronomicalWeatherPort = fetchAstronomicalWeatherPort;
         this.celestialBodyDataFetcherPort = celestialBodyDataFetcherPort;

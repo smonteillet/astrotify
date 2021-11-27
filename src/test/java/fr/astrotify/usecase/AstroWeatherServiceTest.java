@@ -1,7 +1,8 @@
-package fr.astrotify.application.service;
+package fr.astrotify.usecase;
 
-import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
-import fr.astrotify.application.port.out.SendAlertPort;
+import fr.astrotify.usecase.CheckAstroWeather;
+import fr.astrotify.usecase.port.out.FetchAstronomicalWeatherPort;
+import fr.astrotify.usecase.port.out.SendAlertPort;
 import fr.astrotify.domain.AstroWeatherDailyData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +28,7 @@ class AstroWeatherServiceTest {
     AstroWeatherDailyData astronomicalDailyData;
 
     @InjectMocks
-    AstroWeatherUseCaseService astroWeatherService;
+    CheckAstroWeather astroWeatherService;
 
     @Test
     void alertNotSent_whenTonightWeatherIsNotGoodForAstro() {

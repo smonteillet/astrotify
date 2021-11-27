@@ -1,4 +1,4 @@
-package fr.astrotify.application.port.in;
+package fr.astrotify.usecase.port.in;
 
 public interface CheckAstroWeatherUseCase {
 

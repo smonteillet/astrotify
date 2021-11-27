@@ -1,4 +1,4 @@
-package fr.astrotify.application.port.out;
+package fr.astrotify.usecase.port.out;
 
 import fr.astrotify.domain.AstroWeatherDailyData;
 

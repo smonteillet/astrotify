@@ -1,6 +1,6 @@
 package fr.astrotify.adapter.out;
 
-import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
+import fr.astrotify.usecase.port.out.FetchAstronomicalWeatherPort;
 import fr.astrotify.domain.AstroWeatherDailyData;
 import fr.astrotify.domain.AstroWeatherHourlyData;
 import org.jsoup.Jsoup;

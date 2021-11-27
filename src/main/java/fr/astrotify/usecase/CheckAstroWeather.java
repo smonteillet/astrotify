@@ -1,20 +1,20 @@
-package fr.astrotify.application.service;
+package fr.astrotify.usecase;
 
-import fr.astrotify.application.port.in.CheckAstroWeatherUseCase;
-import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
-import fr.astrotify.application.port.out.SendAlertPort;
+import fr.astrotify.usecase.port.in.CheckAstroWeatherUseCase;
+import fr.astrotify.usecase.port.out.FetchAstronomicalWeatherPort;
+import fr.astrotify.usecase.port.out.SendAlertPort;
 import fr.astrotify.domain.AstroWeatherDailyData;
 
 import java.util.logging.Logger;
 
-public class AstroWeatherUseCaseService implements CheckAstroWeatherUseCase {
+public class CheckAstroWeather implements CheckAstroWeatherUseCase {
 
-    private static final Logger LOGGER = Logger.getLogger(AstroWeatherUseCaseService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CheckAstroWeather.class.getName());
 
     private final SendAlertPort sendAlertPort;
     private final FetchAstronomicalWeatherPort fetchAstronomicalWeatherPort;
 
-    public AstroWeatherUseCaseService(SendAlertPort sendAlertPort, FetchAstronomicalWeatherPort fetchAstronomicalWeatherPort) {
+    public CheckAstroWeather(SendAlertPort sendAlertPort, FetchAstronomicalWeatherPort fetchAstronomicalWeatherPort) {
         this.sendAlertPort = sendAlertPort;
         this.fetchAstronomicalWeatherPort = fetchAstronomicalWeatherPort;
     }

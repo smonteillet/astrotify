@@ -5,10 +5,9 @@ import com.google.cloud.functions.Context;
 import fr.astrotify.AppInstances;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class GCPFunctionEntrypoint implements BackgroundFunction<GCPFunctionEntrypoint.PubSubMessage> {
-    
+
     @Override
     public void accept(PubSubMessage pubSubMessage, Context context) {
         // TODO fetch projectId elsewhere. Maybe from System.getenv(...)
@@ -26,7 +25,7 @@ public class GCPFunctionEntrypoint implements BackgroundFunction<GCPFunctionEntr
             String skyLiveUrl = pubSubMessage.attributes.get("SKY_LIVE_URL");
             String city = pubSubMessage.attributes.get("CITY");
             String celestialBody = pubSubMessage.attributes.get("CELESTIAL_BODY");
-            AppInstances.buildCelestialBodyEphemerideUseCase(
+            AppInstances.buildFetchCelestialBodyEphemerideUseCase(
                     astrotifyTelegramBotToken,
                     telegramChatId,
                     meteoblueUrl,

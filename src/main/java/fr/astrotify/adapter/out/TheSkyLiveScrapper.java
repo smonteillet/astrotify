@@ -1,6 +1,6 @@
 package fr.astrotify.adapter.out;
 
-import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
+import fr.astrotify.usecase.port.out.CelestialBodyDataFetcherPort;
 import fr.astrotify.domain.CelestialBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

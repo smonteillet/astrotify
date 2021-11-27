@@ -1,8 +1,9 @@
-package fr.astrotify.application.service;
+package fr.astrotify.usecase;
 
-import fr.astrotify.application.port.out.CelestialBodyDataFetcherPort;
-import fr.astrotify.application.port.out.FetchAstronomicalWeatherPort;
-import fr.astrotify.application.port.out.SendAlertPort;
+import fr.astrotify.usecase.FetchFetchCelestialBodyEphemeride;
+import fr.astrotify.usecase.port.out.CelestialBodyDataFetcherPort;
+import fr.astrotify.usecase.port.out.FetchAstronomicalWeatherPort;
+import fr.astrotify.usecase.port.out.SendAlertPort;
 import fr.astrotify.domain.AstroWeatherDailyData;
 import fr.astrotify.domain.AstroWeatherHourlyData;
 import fr.astrotify.domain.CelestialBody;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CelestialBodyEphemerideServiceTest {
+class FetchCelestialBodyEphemerideTest {
 
     @Mock
     SendAlertPort sendAlertPort;
@@ -33,7 +34,7 @@ class CelestialBodyEphemerideServiceTest {
     CelestialBodyDataFetcherPort celestialBodyDataFetcherPort;
 
     @InjectMocks
-    CelestialBodyEphemerideService  celestialBodyEphemerideService;
+    FetchFetchCelestialBodyEphemeride fetchCelestialBodyEphemeride;
 
     @Test
     void noWeatherData() {
@@ -52,7 +53,7 @@ class CelestialBodyEphemerideServiceTest {
                 .astroWeatherHourlyDataList(new ArrayList<>())
                 .build());
         //when
-        celestialBodyEphemerideService.sendCelestialBodyEphemeride("Leonard Comet", "Muret");
+        fetchCelestialBodyEphemeride.sendCelestialBodyEphemeride("Leonard Comet", "Muret");
         //then
         verify(sendAlertPort).sendAlert(
                 "Ephemeride Leonard Comet pour demain sur Muret:" +
@@ -88,7 +89,7 @@ class CelestialBodyEphemerideServiceTest {
                 AstroWeatherDailyData.builder().astroWeatherHourlyDataList(astroWeatherHourlyDataList).build()
         );
         //when
-        celestialBodyEphemerideService.sendCelestialBodyEphemeride("Leonard Comet", "Muret");
+        fetchCelestialBodyEphemeride.sendCelestialBodyEphemeride("Leonard Comet", "Muret");
         //then
         verify(sendAlertPort).sendAlert(
                 "Ephemeride Leonard Comet pour demain sur Muret:" +
